@@ -12,7 +12,7 @@
   `/temp-workspace/api` 路由，并在启动时驱动清理逻辑。
 - **浏览器半边**（`src/client.js` → `lib/client.js`）—— 在侧边栏「+ 添加工作区」
   按钮旁注入一个小图标；点击后调用宿主路由，并在新建的工作区里打开一个新对话。
-  它还注册了一个 **设置 → 临时工作区** 独立页面，并在设置开启时于启动阶段弹确认对话框。
+  它还注册了一个 **设置 → 临时工作区** 独立页面，以及插件管理器里本插件的**配置页**，并在设置开启时于启动阶段弹确认对话框。
 
 ## 安装方式
 
@@ -55,15 +55,18 @@ dsh plugin --profile web add github:wjj-8283/dsh-temp-workspace#<ref>
 ## 设置 → 临时工作区
 
 插件在 **设置导航** 里注册了自己的**独立页面**（`settings.section` 插槽，id 为
-`dsh-temp-workspace`），页面里是下面三个设置项。取值存放在 profile patch 中 Loader 条目
-`dsh-temp-workspace` 的 `config` 里（dsh 0.1.7 起旧的 `settings.plugin.item` 卡片插槽与
-`~/.dsh/settings.yaml` 均已移除）：
+`dsh-temp-workspace`），页面里是下面四个设置项。同一份表单也注册到**插件管理器里本插件的
+配置页**：`plugins.bundle.config`（按包名）与 `plugins.row.config`（按
+`<包名>#<rowId>`），侧栏 → 插件 里的条目行会显示一行摘要。取值存放在 profile patch 中
+Loader 条目 `dsh-temp-workspace` 的 `config` 里（dsh 0.1.7 起旧的
+`settings.plugin.item` 卡片插槽与 `~/.dsh/settings.yaml` 均已移除）：
 
 | 设置 | 取值 | 默认 | 含义 |
 | --- | --- | --- | --- |
 | `deleteMode` | `immediate` / `delayed` | `immediate` | 下次启动时何时删除临时工作区 |
 | `deleteDelay` | 秒 | `3600` | `delayed` 模式下删除前的宽限期 |
 | `confirmBeforeDelete` | 开 / 关 | `开` | 删除前是否先询问用户 |
+| `tempRoot` | 绝对路径 / `~/...` / 空 | 空 | **新**临时工作区的父目录（空 = `~/.dsh/temp-workspaces`） |
 
 - `confirmBeforeDelete` **开**：宿主启动时绝不自动删除，而是挂起这些工作区，
   浏览器弹出**确认对话框**，提供两个选项：

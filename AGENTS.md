@@ -71,7 +71,9 @@ node build.mjs --check      # 校验 lib/client.js 与 src/ 同步（CI / prepub
 
 导出 `Config`（schemastery schema）后，Loader 会校验并补默认值，再作为 `apply` 的第二个
 参数传入；浏览器半边在 Settings 导航里注册自己的独立页面（`settings.section` 插槽，id 与
-`SETTINGS_NS` 同名），页面通过 `/temp-workspace/api/config` 读写这些值。写回走
+`SETTINGS_NS` 同名），同一份表单也注册到插件管理器里本插件的配置页
+（`plugins.bundle.config` 按包名、`plugins.row.config` 按 `<包名>#<rowId>`，行摘要用
+`view: 'summary'`）。页面通过 `/temp-workspace/api/config` 读写这些值。写回走
 `ctx.configEditor.edit(ctx.fiber.entry, …)` —— dsh 0.1.7 起旧的
 `ctx.settings.register(ns, schema)` 命名空间作用域、`settings.plugin.item` 卡片插槽与
 `~/.dsh/settings.yaml` 均已移除。
@@ -81,6 +83,7 @@ node build.mjs --check      # 校验 lib/client.js 与 src/ 同步（CI / prepub
 | `deleteMode` | `immediate` / `delayed` | `immediate` | 下次启动立即删，或延迟删 |
 | `deleteDelay` | 秒 | `3600` | `delayed` 模式下的宽限期 |
 | `confirmBeforeDelete` | 开 / 关 | `on` | 删除前是否弹确认（关掉才自动删） |
+| `tempRoot` | 绝对路径 / `~/...` / 空 | 空 | **新**临时工作区的父目录（空 = `$DSH_HOME/temp-workspaces`）；marker 固定在 DSH home，记录用过的所有根目录，改设置不会丢旧工作区 |
 
 ### API（`/temp-workspace/api/<method>`，读 GET / 写 POST）
 

@@ -2,6 +2,36 @@
 
 All notable changes to this project are documented in this file.
 
+## [0.1.4] - 2026
+
+### Added
+- The settings form is also registered on the plugin's **own page in the Plugin
+  Manager** (sidebar → Plugins → this plugin): `plugins.bundle.config` keyed by
+  the package name renders the fields between the bundle description and its
+  rows, `plugins.row.config` keyed by `<package>#<rowId>` gives the row's
+  configure page, and the list row gets a one-line summary. Settings → Temporary
+  workspace keeps its own page (same form).
+
+## [0.1.3] - 2026
+
+### Added
+- `tempRoot` setting (Settings → Temporary workspace, the Plugin Manager page,
+  or the entry's `config`): choose the parent directory that **new** temporary
+  workspaces are created under. Accepts an absolute path or `~/...`; empty keeps
+  the default `$DSH_HOME/temp-workspaces`. The marker stays at the fixed
+  DSH-home root and records every temp root the install has used, so switching
+  the setting never orphans earlier workspaces — orphan session-dir residue and
+  throwaway-dir sweeps follow every recorded root.
+- Saving a new `tempRoot` takes effect for the *next* create immediately.
+
+### Fixed
+- A temp workspace is now exactly `<tempRoot>/<uuid>` (a direct UUID child) in
+  path checks, session project-dir patterns and throwaway-dir reaping alike, so
+  pointing `tempRoot` at a shared directory that also holds real projects can
+  never reap their session logs or projection-cache rows.
+- Marker writes serialize through one queue and use unique temp file names, so
+  concurrent remember/write calls cannot race the rename or lose roots.
+
 ## [0.1.2] - 2026
 
 ### Changed

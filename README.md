@@ -19,8 +19,9 @@ workspace **and the workspace itself** — the temp workspace leaves no trace.
 - **Browser half** (`src/client.js` → `lib/client.js`) — injects a small icon
   button beside the sidebar "+ Add workspace" button; on click it calls the
   host route and opens a new Conversation in the created workspace. It also
-  registers a **Settings → Temporary workspace** page and, when the setting is
-  enabled, a confirm dialog at boot.
+  registers a **Settings → Temporary workspace** page and the plugin's own
+  configuration page in the **Plugin Manager**, and when the setting is enabled
+  a confirm dialog at boot.
 
 ## Installation
 
@@ -84,9 +85,13 @@ dsh plugin --profile web add github:wjj-8283/dsh-temp-workspace#<ref>
 ## Settings → Temporary workspace
 
 The plugin registers its **own page** in the Settings navigation (the
-`settings.section` slot, id `dsh-temp-workspace`) with the three settings below.
-The values live in the profile patch, on the Loader entry `dsh-temp-workspace`'s
-`config` (dsh 0.1.7 removed both the old `settings.plugin.item` card slot and
+`settings.section` slot, id `dsh-temp-workspace`) with the four settings below.
+The same form is also registered on the plugin's **own page in the Plugin
+Manager** (`plugins.bundle.config` keyed by the package name, and
+`plugins.row.config` keyed by `<package>#<rowId>`), which is where the sidebar
+→ Plugins entry shows it; the list row gets a one-line summary. The values live
+in the profile patch, on the Loader entry `dsh-temp-workspace`'s `config`
+(dsh 0.1.7 removed both the old `settings.plugin.item` card slot and
 `~/.dsh/settings.yaml`):
 
 | setting | values | default | meaning |
@@ -94,6 +99,7 @@ The values live in the profile patch, on the Loader entry `dsh-temp-workspace`'s
 | `deleteMode` | `immediate` / `delayed` | `immediate` | when a temp workspace is removed on the next boot |
 | `deleteDelay` | seconds | `3600` | grace period before removal when `delayed` |
 | `confirmBeforeDelete` | on / off | `on` | ask the user before removing held workspaces |
+| `tempRoot` | absolute path / `~/...` / empty | empty | parent directory for **new** temp workspaces (`~/.dsh/temp-workspaces` when empty) |
 
 - `confirmBeforeDelete` **on**: the host never auto-deletes at boot. It holds the
   workspaces and the browser shows a **confirm dialog** with two choices:

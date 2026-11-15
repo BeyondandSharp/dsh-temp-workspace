@@ -1,7 +1,7 @@
 {
   "name": "@wjj-8283/dsh-temp-workspace",
-  "version": "0.1.2",
-  "description": "DSH web client plugin: a temporary workspace (临时工作区) — every conversation it contains is deleted at the next Harness restart (immediately or after a delay), optionally behind a confirm dialog. Adds a small icon beside the sidebar's \"Add workspace\" button and its own page in the Settings navigation.",
+  "version": "0.1.4",
+  "description": "DSH web client plugin: a temporary workspace (临时工作区) — every conversation it contains is deleted at the next Harness restart (immediately or after a delay), optionally behind a confirm dialog. Adds a small icon beside the sidebar's \"Add workspace\" button, a Settings page, and its own configuration page in the Plugin Manager.",
   "type": "module",
   "license": "MIT",
   "publishConfig": {
